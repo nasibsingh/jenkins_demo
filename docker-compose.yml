@@ -1,0 +1,26 @@
+version: "3.7"
+services:
+  api:
+      image: node:12
+      container_name: api
+      working_dir: /express-pg-api
+      entrypoint: ["/bin/bash", "./scripts/entrypoint.sh"]
+      volumes:
+          - ./:/express-pg-api
+      depends_on:
+          - db
+      ports:
+        - "8080:8080"
+
+  db:
+      image: postgres
+      container_name: db
+      restart: always
+      ports:
+          - "5427:5432"
+      environment:
+          POSTGRES_USER: express
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: express-pg-api
+      volumes:
+        - ./db:/var/lib/postgresql/data
